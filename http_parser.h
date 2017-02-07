@@ -25,9 +25,20 @@
 #define HEADER_BUFFER_FULL -8
 #define BAD_HTTP_PROTOCOL -9
 
+enum{
+  FLAG_NONE = 0, //normal data stream, no need to decode
+  READ_CLIENT_DECODE = 1, //receive the data from client to decode
+  WRITE_SERVER_ENCODE = 2 //encode before sending data to server
+};
+
+static int io_flag; //
+static int m_pid; //保存主进程id
+
+void rewrite_header();
 void forward_header(int);
 int send_data(int, char*, int);
 int receive_data(int, char*, int);
+void handle_client(int, struct sockaddr_in);
 ssize_t read_line_to_buf(int, void*, size_t);
 void hand_proxy_info_req(int, char*);
 void get_info(char*);
