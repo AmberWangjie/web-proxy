@@ -1,0 +1,22 @@
+ECE590-02 HW1 
+Jie wang     Yuchen Zhou
+**********************************************************************************
+There are some imperfect or even inappropiate approaches to write our code and do the testing, which probably lead to corresponding potential risk and vulnerability of our program, which might also affect the security of the user-end once the server being applied on the web.
+
+The dangers we could have come up with yet are listed as following, this document will be kept updated later.
+
+Dangers&Reasons:
+1 Our programs were written in C, which is a not-so-high-level language, we need to frequently ask for memory space from the system and do both static and dynamic allocation, which can easily lead to memory leak and other memory mis-use issues. Although we have tried to use valgrind to keep the memory clean when doing debugging, there must be some places where memory management were not perfectly taken care of which we haven't found out due the inadequate test cases. And memory leak always tends to cause incorrect output and function execution due to the randomness of the memory read and write which happens under the hood.
+
+2 Our string buffer which used to contain the input from remote server was build mainly relying on fixed max size char array, which very likely run into the buffer overflow problem since there is no explicity limit on the real-world input size. The buffer overflows typically allow either execution of attacker-dictated code on the server, or read access to memory areas.
+
+3 The user authorization should be performed properly and consistently. The program files, even the log file(which only be able to be written as root user), are written with not much access authentication concerns. The directory is writeable by the user that the server runs as, which is "nobody" under default configurations. This can make the effect of some bugs in the code much worse than they normally be, especially when a bug enable s a remote user to run arbitrary commands on the server, then the remote user is also able to gain root access to the server. And just add permission requirement by running with "sudo" is not an optimal solution.
+
+4 A proxy may be installed on the "dual homed gateway" type of firewall machine, which means the proxy can see both sides of the firewall. Requests for information from the web server are intercepted by the proxy, forwarded to the server machine, and the response forwarded back to the requester. If the proxy is not reliable enough, it will open up a security hole in the firewall, which may lead to some malicious access from the outside world to the web server.
+
+5 There is no code or configuration in our program designed as some checking mechanism for access and error log files epriodically for suspiciouos activity. accesses involves system commands or extremely long lines in URL requests. The former indicate an attempt to trick for invoking a system command, the latter may attempt to overrun a program's input buffer.
+
+6 The parser part in the source code is also not robust enough, it largely relies on the so-called reasonable or common input from the client and server side. The parser can be instructed to read from URIs, and it will do so unless told explicitly not to. The attackers could tell the parser to read from some malicious or random input ro cause security problems. The attacks can also be used to make the web server connet outwards using HTTP, or connect to internal servers not normally available from outside the firewall. Thus, the parsing rules which purely extracted from the protocol files or libraries without further consideration are not always a healthy defaults from a security point of view.
+
+Summary:
+From what we have learned so far, many common security problems in web programming may be avoided if we programmers focus on two things while coding: first si that every single piece of input to the application is under the user's control; second is to keep in mind our job is not only to please the users of the application, but also to displease the abusers.
