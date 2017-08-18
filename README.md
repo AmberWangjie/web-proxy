@@ -7,7 +7,7 @@ Our proxy can cache responses to avoid re-fetching the new response when there c
 Our proxy shall handle three method, users can configure their browser and browse typical webpages by using our proxy.
 We produce a log file in /var/log called erss-proxy.log which kept records of the information of request, response, also the cache and errors, etc.
 
-==============================================================================================================================
+
 Our proxy still has some explicit flaws. 
 
 First, there are some test cases that our proxy cannot handle correctly:
@@ -18,7 +18,7 @@ Second, the data structure of our cache is a basically a doubly linked list , wh
 
 Finally, there are some security issues related to the potential risks and dangers in our program, please see the details in our dangers.txt.
 
-==============================================================================================================================
+
 The project includes the following files:
 Makefile	cache.h		log.c		parser.h	socket.h
 README		clientSocket.c	log.h		serverSocket.c
@@ -26,7 +26,7 @@ cache.c		dangers.txt	parser.c	socket.c
 
 Please see our comments in each file for details about the code.
 
-==============================================================================================================================
+
 To run the program, please follow the instruction below:
 Note: Please run the code under a linux machine environment
 1 Open two terminal;
@@ -35,6 +35,6 @@ Note: Please run the code under a linux machine environment
 4 In terminal 1: ./serverSocket <port>
 5 In terminal 2: ./clientSocket <port> <number 1 - 7>(refer to the corresponding command line number)
 
-******************************************************************************************************************************
+
 Reference:
 Hypertext Transfer Protocol -- HTTP/1.1(2014) Retrieved from https://www.w3.org/Protocols/rfc2616/rfc2616.html
